@@ -1,0 +1,29 @@
+{
+  "name": "async-vdot",
+  "title": "Async VDOT — Video Direct Observation of Therapy",
+  "shortDescription": "Patients record medication intake videos; clinicians review asynchronously. For MAT, TB DOTS, and adherence programs.",
+  "description": "Async VDOT brings Video Direct Observation of Therapy into your doxy.me workflow — asynchronously. Patients record short guided videos of themselves taking medication; clinicians review them on their own schedule in a structured queue.\n\nDesigned for:\n• MAT (Medication-Assisted Treatment) programs — buprenorphine, methadone, naltrexone\n• TB DOTS (Directly Observed Therapy, Short-course) programs\n• General medication adherence monitoring for chronic conditions\n\nKey Features:\n• Patient self-recording with step-by-step guided medication intake flow\n• Clinician review queue with approve/flag/request-retake workflow\n• Adherence dashboard with 7-day trends, completion rates, and activity feed\n• Patient roster with enrollment, medication schedules, and status tracking\n• HIPAA-ready video storage with encrypted transmission\n\nBuilt by doxy.me Labs. Integrated directly into your doxy.me session.",
+  "optionalDescription": "Ideal for addiction medicine specialists, infectious disease clinicians, and primary care providers running structured medication adherence programs. No additional app downloads required for patients — record directly from the browser.",
+  "price": 0,
+  "status": "beta",
+  "icon": "https://dylntrnr.github.io/async-vdot-doxyme-app/icon.svg",
+  "source": "https://doxy-record.replit.app/",
+  "video": null,
+  "sourceCode": "https://github.com/dylntrnr/async-vdot-doxyme-app",
+  "isFake": false,
+  "metadata": {
+    "category": "clinical_tools",
+    "tags": ["vdot", "medication-adherence", "mat", "tb-dots", "async-video", "pharmacy"],
+    "developer": {
+      "name": "doxy.me Labs",
+      "email": "labs@doxy.me",
+      "website": "https://doxy.me",
+      "country": "US"
+    },
+    "links": {
+      "app": "https://doxy-record.replit.app/",
+      "terms": "https://doxy.me/terms",
+      "privacy": "https://doxy.me/privacy"
+    }
+  }
+}

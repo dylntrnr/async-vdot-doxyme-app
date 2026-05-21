@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Async VDOT — Video Direct Observation of Therapy | doxy.me Apps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --vdot-primary: #5FD0C2;
+      --vdot-secondary: #3FBFB2;
+      --vdot-accent: #8EE8DE;
+      --vdot-bg: #0A1412;
+      --vdot-surface: #111E1C;
+      --vdot-surface2: #192823;
+      --vdot-border: #1F3530;
+      --vdot-text: #E8FAF8;
+      --vdot-muted: #7AADA8;
+      --doxy-teal: #5FD0C2;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--vdot-bg);
+      color: var(--vdot-text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ─────────────────────────── */
+    .header {
+      background: var(--vdot-surface);
+      border-bottom: 1px solid var(--vdot-border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--vdot-secondary), var(--vdot-accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .header-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--vdot-text);
+    }
+    .header-sub {
+      font-size: 11px;
+      color: var(--vdot-muted);
+      margin-top: 1px;
+    }
+    .header-badge {
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(95, 208, 194, 0.15);
+      color: var(--doxy-teal);
+      border: 1px solid rgba(95, 208, 194, 0.3);
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+    .header-doxy {
+      font-size: 11px;
+      color: var(--vdot-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .doxy-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--doxy-teal);
+    }
+
+    /* ── Scrollable content ─────────────── */
+    .content {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+    }
+
+    /* ── Hero ───────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 32px 16px 28px;
+    }
+    .hero-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #3FBFB2 0%, #8EE8DE 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 16px;
+      box-shadow: 0 8px 32px rgba(95, 208, 194, 0.35);
+    }
+    .hero-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--vdot-accent), var(--vdot-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 14px;
+      color: var(--vdot-muted);
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 24px;
+    }
+
+    /* ── CTA Button ─────────────────────── */
+    .cta-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.18s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #3FBFB2, #5FD0C2);
+      color: #0A1412;
+      box-shadow: 0 4px 16px rgba(95, 208, 194, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(95, 208, 194, 0.5);
+    }
+    .btn-secondary {
+      background: var(--vdot-surface2);
+      color: var(--vdot-text);
+      border: 1px solid var(--vdot-border);
+    }
+    .btn-secondary:hover {
+      background: var(--vdot-border);
+    }
+
+    /* ── Stats row ──────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--vdot-surface);
+      border: 1px solid var(--vdot-border);
+      border-radius: var(--radius);
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--vdot-accent);
+      display: block;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--vdot-muted);
+      margin-top: 3px;
+    }
+
+    /* ── Section ────────────────────────── */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--vdot-muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── Feature list ───────────────────── */
+    .features {
+      background: var(--vdot-surface);
+      border: 1px solid var(--vdot-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--vdot-border);
+    }
+    .feature-item:last-child { border-bottom: none; }
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: rgba(95, 208, 194, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .feature-name {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .feature-desc {
+      font-size: 12px;
+      color: var(--vdot-muted);
+      line-height: 1.5;
+    }
+
+    /* ── App launcher card ──────────────── */
+    .launcher-card {
+      background: linear-gradient(135deg, rgba(63, 191, 178, 0.1), rgba(142, 232, 222, 0.06));
+      border: 1px solid rgba(95, 208, 194, 0.35);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .launcher-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .launcher-desc {
+      font-size: 12px;
+      color: var(--vdot-muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Workflow steps ─────────────────── */
+    .workflow {
+      background: var(--vdot-surface);
+      border: 1px solid var(--vdot-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .workflow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--vdot-border);
+    }
+    .workflow-step:last-child { border-bottom: none; }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(95, 208, 194, 0.15);
+      border: 1px solid rgba(95, 208, 194, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--vdot-primary);
+      flex-shrink: 0;
+    }
+    .step-content {}
+    .step-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .step-desc {
+      font-size: 12px;
+      color: var(--vdot-muted);
+      line-height: 1.4;
+    }
+
+    /* ── Use cases ──────────────────────── */
+    .use-cases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .use-case-card {
+      background: var(--vdot-surface);
+      border: 1px solid var(--vdot-border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .use-case-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(95, 208, 194, 0.12);
+      color: var(--vdot-primary);
+      border: 1px solid rgba(95, 208, 194, 0.2);
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .use-case-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .use-case-desc {
+      font-size: 11px;
+      color: var(--vdot-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Screenshot placeholders ────────── */
+    .screenshots {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .screenshot {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--vdot-border);
+      aspect-ratio: 16/10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--vdot-surface);
+      position: relative;
+    }
+    .screenshot-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--vdot-muted);
+      text-align: center;
+      padding: 0 12px;
+      line-height: 1.4;
+    }
+    .screenshot-icon {
+      font-size: 22px;
+      opacity: 0.5;
+    }
+    .screenshot-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--vdot-primary),
+        var(--vdot-primary) 1px,
+        transparent 1px,
+        transparent 12px
+      );
+    }
+    .screenshot-1 { background: linear-gradient(135deg, #0d1f1d, #111E1C); }
+    .screenshot-2 { background: linear-gradient(135deg, #0f1e1c, #131f1e); }
+    .screenshot-3 { background: linear-gradient(135deg, #0c1c1a, #111c1b); }
+    .screenshot-4 { background: linear-gradient(135deg, #0e1e1c, #121f1d); }
+
+    /* ── Links ──────────────────────────── */
+    .links-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .link-item {
+      font-size: 12px;
+      color: var(--vdot-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .link-item:hover { color: var(--vdot-accent); }
+
+    /* ── Footer ─────────────────────────── */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--vdot-muted);
+      padding-top: 16px;
+      border-top: 1px solid var(--vdot-border);
+    }
+    .footer a {
+      color: var(--doxy-teal);
+      text-decoration: none;
+    }
+
+    /* ── Embed overlay ──────────────────── */
+    #embed-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      flex-direction: column;
+    }
+    #embed-overlay.active { display: flex; }
+    .embed-header {
+      background: var(--vdot-surface);
+      border-bottom: 1px solid var(--vdot-border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .embed-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .embed-close {
+      background: none;
+      border: none;
+      color: var(--vdot-muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .embed-close:hover { background: var(--vdot-surface2); color: var(--vdot-text); }
+    #embed-frame {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
+    .embed-blocked {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 16px;
+      padding: 32px;
+    }
+    .embed-blocked-icon { font-size: 48px; }
+    .embed-blocked h3 { font-size: 18px; }
+    .embed-blocked p { font-size: 13px; color: var(--vdot-muted); max-width: 360px; line-height: 1.6; }
+
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      .use-cases { grid-template-columns: 1fr; }
+      .screenshots { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-brand">
+      <div class="header-logo">🎥</div>
+      <div>
+        <div class="header-name">Async VDOT</div>
+        <div class="header-sub">Video Direct Observation of Therapy</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="header-badge">Beta</span>
+      <div class="header-doxy"><div class="doxy-dot"></div>doxy.me</div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-icon">🎥</div>
+      <h1 class="hero-title">Medication Adherence via <span>Async Video</span></h1>
+      <p class="hero-desc">
+        Patients record short guided videos of themselves taking medication.
+        Clinicians review and approve them on their own schedule — no live sessions required.
+        Purpose-built for MAT, TB DOTS, and chronic disease adherence programs.
+      </p>
+      <div class="cta-group">
+        <button class="btn btn-primary" onclick="launchApp()">
+          🚀 Try It Now
+        </button>
+        <a href="https://doxy.me" target="_blank" rel="noopener" class="btn btn-secondary">
+          🏥 doxy.me Labs
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-number">Async</span>
+        <div class="stat-label">No live session needed</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">HIPAA</span>
+        <div class="stat-label">Encrypted storage</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">Free</span>
+        <div class="stat-label">Beta access</div>
+      </div>
+    </div>
+
+    <!-- App Launcher -->
+    <div class="launcher-card">
+      <div class="launcher-title">🖥️ Open Async VDOT</div>
+      <div class="launcher-desc">
+        Access the clinician dashboard to review your patient queue, check adherence rates,
+        manage enrollments, and approve or flag recorded doses — all without scheduling a live call.
+      </div>
+      <button class="btn btn-primary" onclick="launchApp()" style="width:100%;justify-content:center">
+        Open Async VDOT →
+      </button>
+    </div>
+
+    <!-- How It Works -->
+    <div class="section-title">How It Works</div>
+    <div class="workflow" style="margin-bottom:20px">
+      <div class="workflow-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Enroll Patient</div>
+          <div class="step-desc">Add patient to roster with medication schedule, frequency, and recording instructions.</div>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Patient Records Dose</div>
+          <div class="step-desc">Patient opens their link, follows the guided flow, and records a short video of themselves taking their medication.</div>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Clinician Reviews Queue</div>
+          <div class="step-desc">Videos appear in the review queue. Watch, approve, flag for follow-up, or request a retake — in minutes.</div>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Adherence Tracked Automatically</div>
+          <div class="step-desc">Dashboard shows 7-day trends, streak data, and completion rates across your entire patient panel.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="section-title">Key Features</div>
+    <div class="features">
+      <div class="feature-item">
+        <div class="feature-icon">📹</div>
+        <div>
+          <div class="feature-name">Guided Patient Recording</div>
+          <div class="feature-desc">Step-by-step prompts guide patients through the recording — show medication, show taking it, confirm. No training needed.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📋</div>
+        <div>
+          <div class="feature-name">Clinician Review Queue</div>
+          <div class="feature-desc">Approve, flag, or request retake for each submission. Add notes. Filter by patient, date, or status.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <div>
+          <div class="feature-name">Adherence Dashboard</div>
+          <div class="feature-desc">Real-time adherence rates, 7-day trends, activity feeds, and panel-wide compliance overview at a glance.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">👥</div>
+        <div>
+          <div class="feature-name">Patient Roster Management</div>
+          <div class="feature-desc">Enroll patients, set medication schedules, view individual adherence history, and manage active/inactive status.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔒</div>
+        <div>
+          <div class="feature-name">HIPAA-Ready Video Storage</div>
+          <div class="feature-desc">All recordings are encrypted in transit and at rest. Designed for clinical settings from day one. Patient data stays protected.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Use Cases -->
+    <div class="section-title">Built For</div>
+    <div class="use-cases">
+      <div class="use-case-card">
+        <div class="use-case-tag">MAT</div>
+        <div class="use-case-title">Medication-Assisted Treatment</div>
+        <div class="use-case-desc">Monitor buprenorphine, methadone, and naltrexone adherence for opioid use disorder without daily in-person visits.</div>
+      </div>
+      <div class="use-case-card">
+        <div class="use-case-tag">TB DOTS</div>
+        <div class="use-case-title">Directly Observed Therapy</div>
+        <div class="use-case-desc">Digital DOTS for TB treatment. Replace travel-intensive in-person observation with verified async video review.</div>
+      </div>
+      <div class="use-case-card">
+        <div class="use-case-tag">Chronic</div>
+        <div class="use-case-title">Chronic Disease Adherence</div>
+        <div class="use-case-desc">Medication adherence for HIV antiretrovirals, hepatitis C treatment, and complex psychiatric medication regimens.</div>
+      </div>
+      <div class="use-case-card">
+        <div class="use-case-tag">General</div>
+        <div class="use-case-title">Any Adherence Program</div>
+        <div class="use-case-desc">Flexible enough for any context where verified medication intake matters — post-op, high-risk patients, clinical trials.</div>
+      </div>
+    </div>
+
+    <!-- Screenshots -->
+    <div class="section-title">Screenshots</div>
+    <div class="screenshots">
+      <div class="screenshot screenshot-1">
+        <div class="screenshot-bg"></div>
+        <div class="screenshot-icon">📊</div>
+        <div class="screenshot-label">Adherence Dashboard<br>7-day trends & activity feed</div>
+      </div>
+      <div class="screenshot screenshot-2">
+        <div class="screenshot-bg"></div>
+        <div class="screenshot-icon">📋</div>
+        <div class="screenshot-label">Review Queue<br>Approve · Flag · Request retake</div>
+      </div>
+      <div class="screenshot screenshot-3">
+        <div class="screenshot-bg"></div>
+        <div class="screenshot-icon">👥</div>
+        <div class="screenshot-label">Patient Roster<br>Enrollment & schedule management</div>
+      </div>
+      <div class="screenshot screenshot-4">
+        <div class="screenshot-bg"></div>
+        <div class="screenshot-icon">📹</div>
+        <div class="screenshot-label">Patient Recording<br>Guided step-by-step intake flow</div>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <div class="links-row">
+      <a href="https://doxy-record.replit.app/" target="_blank" rel="noopener" class="link-item">🚀 Try Async VDOT</a>
+      <a href="https://doxy.me" target="_blank" rel="noopener" class="link-item">🏥 doxy.me</a>
+      <a href="https://doxy.me/terms" target="_blank" rel="noopener" class="link-item">📄 Terms</a>
+      <a href="https://doxy.me/privacy" target="_blank" rel="noopener" class="link-item">🔒 Privacy</a>
+      <a href="mailto:labs@doxy.me" class="link-item">✉️ labs@doxy.me</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Built by <a href="https://doxy.me" target="_blank">doxy.me Labs</a> · Integrated with <a href="https://doxy.me" target="_blank">doxy.me</a></p>
+      <p style="margin-top:6px">© 2026 doxy.me, Inc.</p>
+    </div>
+
+  </div>
+
+  <!-- Embed Overlay -->
+  <div id="embed-overlay">
+    <div class="embed-header">
+      <span class="embed-title">🎥 Async VDOT</span>
+      <button class="embed-close" onclick="closeApp()">✕</button>
+    </div>
+    <div id="embed-container" style="flex:1;display:flex;flex-direction:column"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
